@@ -1,0 +1,13 @@
+.dvc/
+.github/
+.venv/
+notebooks/
+.dvcignore
+.env.example
+client.py
+dvc.lock
+dvc.yaml
+README.md
+
+assets/data/
+assets/results/

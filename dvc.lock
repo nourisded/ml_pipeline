@@ -1,0 +1,71 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python src/prepare.py
+    deps:
+    - path: assets/data/raw/train.csv
+      hash: md5
+      md5: e8c4560161dc3c8571b5b2db25be3294
+      size: 122403
+    params:
+      params.yaml:
+        split.eval_data_path: assets/data/processed/final_test.csv
+        split.full_data_path: assets/data/raw/train.csv
+        split.train_data_path: assets/data/processed/final_train.csv
+    outs:
+    - path: assets/data/processed/final_test.csv
+      hash: md5
+      md5: e7d8b56716721eee200a45a036fad0fd
+      size: 25031
+    - path: assets/data/processed/final_train.csv
+      hash: md5
+      md5: 803e33dbf75c0b666ee15f5fce57988c
+      size: 99543
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: assets/data/processed/final_test.csv
+      hash: md5
+      md5: e7d8b56716721eee200a45a036fad0fd
+      size: 25031
+    - path: assets/data/processed/final_train.csv
+      hash: md5
+      md5: 803e33dbf75c0b666ee15f5fce57988c
+      size: 99543
+    params:
+      params.yaml:
+        train.eval_data_path: assets/data/processed/final_test.csv
+        train.model_path: assets/models/model.pkl
+        train.repo: ml_best_practices
+        train.train_data_path: assets/data/processed/final_train.csv
+        train.username: Ezzaldin97
+    outs:
+    - path: assets/models/model.pkl
+      hash: md5
+      md5: f2e3c5076bc599ad56b3899e2ec59223
+      size: 7542768
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: assets/data/processed/final_test.csv
+      hash: md5
+      md5: e7d8b56716721eee200a45a036fad0fd
+      size: 25031
+    - path: assets/models/model.pkl
+      hash: md5
+      md5: f2e3c5076bc599ad56b3899e2ec59223
+      size: 7542768
+    - path: src/train.py
+      hash: md5
+      md5: 64f915506c6609aa6b2e11c495e3242d
+      size: 2672
+    params:
+      params.yaml:
+        evaluate.eval_data_path: assets/data/processed/final_test.csv
+        evaluate.model_path: assets/models/model.pkl
+        evaluate.validation_file: assets/results/validation_perf.json
+    outs:
+    - path: assets/results/validation_perf.json
+      hash: md5
+      md5: 6648094ab4bfb209d7d189663215f0c2
+      size: 123

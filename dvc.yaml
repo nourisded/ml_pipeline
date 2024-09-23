@@ -1,0 +1,37 @@
+stages:
+  split:
+    cmd: python src/prepare.py
+    deps:
+    - assets/data/raw/train.csv
+    params:
+    - split.eval_data_path
+    - split.full_data_path
+    - split.train_data_path
+    outs:
+    - assets/data/processed/final_test.csv
+    - assets/data/processed/final_train.csv
+  train:
+    cmd: python src/train.py
+    deps:
+    - assets/data/processed/final_train.csv
+    - assets/data/processed/final_test.csv
+    params:
+    - train.eval_data_path
+    - train.model_path
+    - train.repo
+    - train.train_data_path
+    - train.username
+    outs:
+    - assets/models/model.pkl
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - assets/data/processed/final_test.csv
+    - assets/models/model.pkl
+    - src/train.py
+    params:
+    - evaluate.eval_data_path
+    - evaluate.model_path
+    - evaluate.validation_file
+    outs:
+    - assets/results/validation_perf.json

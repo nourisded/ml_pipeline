@@ -1,0 +1,14 @@
+split:
+  full_data_path: assets/data/raw/train.csv
+  train_data_path: assets/data/processed/final_train.csv
+  eval_data_path: assets/data/processed/final_test.csv
+train:
+  username: Ezzaldin97
+  repo: ml_best_practices
+  train_data_path: assets/data/processed/final_train.csv
+  eval_data_path: assets/data/processed/final_test.csv
+  model_path: assets/models/model.pkl
+evaluate:
+  eval_data_path: assets/data/processed/final_test.csv
+  model_path: assets/models/model.pkl
+  validation_file: assets/results/validation_perf.json
